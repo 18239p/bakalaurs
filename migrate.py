@@ -6,3 +6,4 @@ import argparse
 def main():
 	parser = argparse.ArgumentParser(description="Migrācijas prototips")
 	parser.add_argument('-i', help="XEN servera adrese")
+	parser.add_argument('-p', help="Xen servera parole")
