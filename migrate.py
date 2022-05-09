@@ -22,7 +22,7 @@ def scp (VMWare_Input,VMWare_Password,selected_VM):
 #Pseudocode:
 # qemu-img -f qcow2 -O vmdk selected_VM.qcow2 selected_VM.vmdk
 def qemu_img(selected_VM):
-	Qemu_result=subprocess.run(['qemu-img', '-f qcow2 -O vmdk', selected_VM+'.qcow2', selected_VM+'.vmdk'],shell=True,capture_output=True,text=True)
+	Qemu_result=subprocess.run(['qemu-img', '-p -f qcow2 -O vmdk', selected_VM+'.qcow2', selected_VM+'.vmdk'],shell=True,capture_output=True,text=True)
 	return Qemu_result.stdout
 #ienākošie mainīgie
 parser = argparse.ArgumentParser(description="Migrācijas prototips")
@@ -45,10 +45,13 @@ if __name__ == '__main__':
 	main()
 	#1.
 	#virt-v2v
-	virt_v2v(Xen_input,Xen_password,selected_VM)
-	print(virt_v2v)
-	qemu_img()
-	print(qemu_img)
+	virt_v2v(Xen_input,Xen_password,selected_VM)		#izsauc virt-v2v no bash termināļa, skaitās kā child process
+	print(virt_v2v)						#izvada funkcijas rezultātu
+	#2.
+	qemu_img(selected_VM)					#pārveido doto VM par .vmdk formātu
+	print(qemu_img)						#izvada funkcijas rezultātu
+	#3.
+	scp(VMWare_Input,VMWare_Password,selected_VM)		#pārvieto doto VM uz VMWare servera
 	#2.
 	#qemu_img
 	#3.
