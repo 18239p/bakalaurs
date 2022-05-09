@@ -15,20 +15,20 @@ import subprocess
 # virt-v2v -ic 'xen+ssh://root@xen.example.com' -ip password Guest_name
 def virt_v2v(Xen_input,Xen_password,selected_VM):
 	virt_result=subprocess.run(['virt-v2v',
-	Xen_input,
-	Xen_password,
+	Xen_input,						# ievade priekš XEN lietotāja
+	Xen_password,						# ievade priekš XEN paroles
 	selected_VM], shell=True, capture_output=True,text=True)
-	return virt_result.stdout
+	return virt_result.stdout				# rezultātu izvade
 #
 
 #Pseudocode:
 # scp selected_VM.vmdk root@vm.wa.re.address /sshrootdir/ 
 def scp (VMWare_Input,VMWare_Password,selected_VM):
 	scp_result=subprocess.run(['scp',
- 	VMWare_Input,
-	VMWare_Password,
+ 	VMWare_Input,						# ievade priekš VMWare lietotājvārda
+	VMWare_Password,					# ievade priekš VMWare paroles
 	selected_VM], '/',shell=True, capture_output=True,text=True)
-	return scp_result.stdout
+	return scp_result.stdout				# rezultātu izvade
 #
 
 #Pseudocode:
