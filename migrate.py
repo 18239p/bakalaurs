@@ -4,7 +4,7 @@
 import argparse
 
 #Pseudocode:
-#def virt-v2v
+#def virt-v2v(Xen_input, password,selected_VM)
 #subprocess.run('[virt-v2v, Xen_input, password, selected_VM]', shell=True, capture_output=True,text=True)
 #
 
