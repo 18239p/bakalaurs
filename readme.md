@@ -1,2 +1,2 @@
 # Bakalaurdarba gits
-Repozitorija, kurā atrodas dotā programma
+Repozitorija, kurā atrodas dotā programma.
