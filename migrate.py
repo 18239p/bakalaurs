@@ -11,3 +11,4 @@ def main():
 	parser.add_argument('-P',dest='VMWare_Input',  help="VMWare servera adrese")
 	parser.add_argument('-O',dest='VM_output_name',  help="Pārtaisītās KVM virtuālās mašīnas formāta nosaukums")
 	args = parser.parse_args()
+	xen_input = args.Xen_input
