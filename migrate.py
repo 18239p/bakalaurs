@@ -47,9 +47,8 @@ parser.add_argument('-P',dest='VMWare_Input',  help="VMWare servera adrese", req
 parser.add_argument('-vP',dest='VMWare_Password', help="VMWare servera parole", required=True)
 parser.add_argument('-O',dest='VM_output_name',  help="Pārtaisītās KVM virtuālās mašīnas formāta nosaukums", required=True)
 
-#ienākošo mainīgo piešķiršana/main logic
 def main():
-	args = parser.parse_args()
+	args = parser.parse_args()			# ienākošo mainīgo piešķiršana/main logic
 	Xen_input      = args.Xen_input
 	Xen_password   = args.Xen_password
 	selected_VM    = args.selected_VM
