@@ -8,3 +8,4 @@ def main():
 	parser.add_argument('-i', help="Xen servera adrese")
 	parser.add_argument('-p', help="Xen servera parole")
 	parser.add_argument('-vm', help="Xen servera Virtuālās mašīnas nosaukums")
+	parser.add_argument('-P',help="VMWare servera adrese")
