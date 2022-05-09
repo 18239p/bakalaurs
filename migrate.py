@@ -18,14 +18,15 @@ def ssh (VMWare_Input,VMWare_Password,selected_VM):
 def qemu_img(selected_VM):
 	subprocess.run(['qemu-img', '-f qcow2 -O vmdk', selected_VM+'.qcow2', selected_VM+'.vmdk'],shell=True,capture_output=True,text=True)
 
-def main():
-	parser = argparse.ArgumentParser(description="Migrācijas prototips")
-	parser.add_argument('-i',dest='Xen_input',  help="Xen servera adrese")
-	parser.add_argument('-p',dest='Xen_password',  help="Xen servera parole")
-	parser.add_argument('-vm',dest='selected_VM', help="Xen servera Virtuālās mašīnas nosaukums")
-	parser.add_argument('-P',dest='VMWare_Input',  help="VMWare servera adrese")
-	parser.add_argument('-vP',dest='VMWare_Password', help="VMWare servera parole")
-	parser.add_argument('-O',dest='VM_output_name',  help="Pārtaisītās KVM virtuālās mašīnas formāta nosaukums")
+parser = argparse.ArgumentParser(description="Migrācijas prototips")
+parser.add_argument('-i',dest='Xen_input',  help="Xen servera adrese")
+parser.add_argument('-p',dest='Xen_password',  help="Xen servera parole")
+parser.add_argument('-vm',dest='selected_VM', help="Xen servera Virtuālās mašīnas nosaukums")
+parser.add_argument('-P',dest='VMWare_Input',  help="VMWare servera adrese")
+parser.add_argument('-vP',dest='VMWare_Password', help="VMWare servera parole")
+parser.add_argument('-O',dest='VM_output_name',  help="Pārtaisītās KVM virtuālās mašīnas formāta nosaukums")
+
+if __name__ == '__main__':
 	args = parser.parse_args()
 	xen_input      = args.Xen_input
 	xen_password   = args.Xen_password
