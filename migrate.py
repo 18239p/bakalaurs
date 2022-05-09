@@ -9,7 +9,8 @@ def virt_v2v(xen_input,xen_password,selected_VM):
 #
 
 #Pseudocode:
-def ssh (VMWare_Input,VMWare_Password,selected_VM):
+# scp selected_VM.vmdk root@vm.wa.re.address /sshrootdir/ 
+def scp (VMWare_Input,VMWare_Password,selected_VM):
 	subprocess.run(['scp', VMWare_Input, VMWare_Password, selected_VM], '/',shell=True, capture_output=True,text=True)
 #
 
