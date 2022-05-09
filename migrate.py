@@ -25,19 +25,19 @@ def virt_v2v(Xen_input,Xen_password,selected_VM):
 # scp selected_VM.vmdk root@vm.wa.re.address /sshrootdir/ 
 def scp (VMWare_Input,VMWare_Password,selected_VM):
 	scp_result=subprocess.run(['scp',
- 	VMWare_Input,					# ievade priekš VMWare lietotājvārda
-	VMWare_Password,				# ievade priekš VMWare paroles
+ 	VMWare_Input,						# ievade priekš VMWare lietotājvārda
+	VMWare_Password,					# ievade priekš VMWare paroles
 	selected_VM], '/',shell=True, capture_output=True,text=True)
-	return scp_result.stdout			# rezultātu izvade
+	return scp_result.stdout				# rezultātu izvade
 #
 
 #Pseudocode:
 # qemu-img -f qcow2 -O vmdk selected_VM.qcow2 selected_VM.vmdk
 def qemu_img(selected_VM):
 	Qemu_result=subprocess.run(['qemu-img', '-p -f qcow2 -O vmdk',
-	selected_VM+'.qcow2',				# virtuālās mašīnas nosaukums
+	selected_VM+'.qcow2',					# virtuālās mašīnas nosaukums
 	selected_VM+'.vmdk'],shell=True,capture_output=True,text=True)
-	return Qemu_result.stdout			# izvada rezultātu no konvertācijas
+	return Qemu_result.stdout				# izvada rezultātu no konvertācijas
 #ienākošie mainīgie
 parser = argparse.ArgumentParser(description="Migrācijas prototips")
 parser.add_argument('-i',dest='Xen_input',  help="Xen servera adrese", required=True)
@@ -48,7 +48,7 @@ parser.add_argument('-vP',dest='VMWare_Password', help="VMWare servera parole", 
 parser.add_argument('-O',dest='VM_output_name',  help="Pārtaisītās KVM virtuālās mašīnas formāta nosaukums", required=True)
 
 def main():
-	args = parser.parse_args()			# ienākošo mainīgo piešķiršana/main logic
+	args = parser.parse_args()				# ienākošo mainīgo piešķiršana/main logic
 	Xen_input      = args.Xen_input
 	Xen_password   = args.Xen_password
 	selected_VM    = args.selected_VM
