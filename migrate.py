@@ -5,4 +5,4 @@ import argparse
 
 def main():
 	parser = argparse.ArgumentParser(description="Migrācijas prototips")
-	
+	parser.add_argument('-i', help="XEN servera adrese")
