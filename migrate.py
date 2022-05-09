@@ -5,14 +5,15 @@ import argparse
 import subprocess
 #Pseudocode:
 def virt-v2v(Xen_input, password,selected_VM)
-subprocess.run(['virt-v2v', Xen_input, password, selected_VM], shell=True, capture_output=True,text=True)
+	subprocess.run(['virt-v2v', Xen_input, password, selected_VM], shell=True, capture_output=True,text=True)
 #
 
-#Pseudocode
+#Pseudocode:
 def ssh (VMWare_Input,VMWare_Passowrd,selected_VM)
-subprocess.run(['scp', VMWare_Input, VMWare_Password, selected_VM, vmware root dir,shell=True, capture_output=True,text=True)
+	subprocess.run(['scp', VMWare_Input, VMWare_Password, selected_VM, vmware root dir,shell=True, capture_output=True,text=True)
+#
 
-#pseudocode
+#Pseudocode:
 #qemu-img -f qcow2 -O vmdk selected_VM.qcow2 selected_VM.vmdk
 #def qemu_img(selected_VM)
 #subprocess.run(['qemu-img',  selected_VM.qcow2, -O selected_VM(.vmdk)],shell=True,capture_output=True,text=True)
