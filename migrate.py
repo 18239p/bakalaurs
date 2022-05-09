@@ -5,11 +5,11 @@ import argparse
 import subprocess
 #Pseudocode:
 def virt_v2v(Xen_input,password,selected_VM):
-	subprocess.run(['virt-v2v', Xen_input, password, selected_VM], shell=True, capture_output=True,text=True)
+	subprocess.run(['virt-v2v', Xen_input, xen_password, selected_VM], shell=True, capture_output=True,text=True)
 #
 
 #Pseudocode:
-def ssh (VMWare_Input,VMWare_Passowrd,selected_VM):
+def ssh (VMWare_Input,VMWare_Password,selected_VM):
 	subprocess.run(['scp', VMWare_Input, VMWare_Password, selected_VM], '/',shell=True, capture_output=True,text=True)
 #
 
@@ -21,14 +21,14 @@ def qemu_img(selected_VM):
 def main():
 	parser = argparse.ArgumentParser(description="Migrācijas prototips")
 	parser.add_argument('-i',dest='Xen_input',  help="Xen servera adrese")
-	parser.add_argument('-p',dest='password',  help="Xen servera parole")
+	parser.add_argument('-p',dest='Xen_password',  help="Xen servera parole")
 	parser.add_argument('-vm',dest='selected_VM', help="Xen servera Virtuālās mašīnas nosaukums")
 	parser.add_argument('-P',dest='VMWare_Input',  help="VMWare servera adrese")
 	parser.add_argument('-vP',dest='VMWare_Password', help="VMWare servera parole")
 	parser.add_argument('-O',dest='VM_output_name',  help="Pārtaisītās KVM virtuālās mašīnas formāta nosaukums")
 	args = parser.parse_args()
 	xen_input      = args.Xen_input
-	password       = args.password
+	xen_password       = args.Xen_password
 	selected_VM    = args.selected_VM
 	VMWare_Input   = args.VMWare_Input
 	VM_output_name = args.VM_output_name
