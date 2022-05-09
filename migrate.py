@@ -4,6 +4,7 @@
 import argparse
 import subprocess
 #Pseudocode:
+# virt-v2v -ic 'xen+ssh://root@xen.example.com' -ip password Guest_name
 def virt_v2v(xen_input,xen_password,selected_VM):
 	subprocess.run(['virt-v2v', xen_input, xen_password, selected_VM], shell=True, capture_output=True,text=True)
 #
