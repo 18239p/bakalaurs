@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+#nepieciešams pārbaudīt visi /usr/bin programmas ir
+#virt-tools
+#Debian -> sid
+#apt install libguestfs-tools
+#
+
 #Python programma
 #Pseudocode : python -> spawn bash shell -> virt-v2v [args] -> qemu-img [args] -> scp [args]
 #
