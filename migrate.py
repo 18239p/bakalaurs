@@ -52,7 +52,4 @@ if __name__ == '__main__':
 	print(qemu_img)						#izvada funkcijas rezultātu
 	#3.
 	scp(VMWare_Input,VMWare_Password,selected_VM)		#pārvieto doto VM uz VMWare servera
-	#2.
-	#qemu_img
-	#3.
-	#scp
+	#izvadīt progresu
