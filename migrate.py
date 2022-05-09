@@ -15,10 +15,10 @@ import subprocess
 # virt-v2v -ic 'xen+ssh://root@xen.example.com' -ip password Guest_name
 def virt_v2v(Xen_input,Xen_password,selected_VM):
 	virt_result=subprocess.run(['virt-v2v',
-	Xen_input,					# ievade priekš XEN lietotāja
-	Xen_password,					# ievade priekš XEN paroles
+	Xen_input,						# ievade priekš XEN lietotāja
+	Xen_password,						# ievade priekš XEN paroles
 	selected_VM], shell=True, capture_output=True,text=True)
-	return virt_result.stdout			# rezultātu izvade
+	return virt_result.stdout				# rezultātu izvade
 #
 
 #Pseudocode:
