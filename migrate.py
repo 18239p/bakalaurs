@@ -93,6 +93,7 @@ def main():
 	VM_output_name = args.VM_output_name
 if __name__ == '__main__':
 	main()
+	filecheck()
 	#1.
 	#virt-v2v
 	virt_v2v(Xen_input,Xen_password,selected_VM)		#izsauc virt-v2v no bash termināļa, skaitās kā child process
