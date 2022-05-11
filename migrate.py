@@ -3,7 +3,7 @@
 #nepieciešams pārbaudīt visi /usr/bin programmas ir
 #virt-tools
 #Debian -> sid
-#apt install libguestfs-tools
+#apt install libguestfs-tools/curl?
 #
 
 #Python programma
@@ -11,6 +11,21 @@
 #
 import argparse
 import subprocess
+
+#get color output
+# ANSI Colors
+cBLK  = "\033[1;30m"
+cRED  = "\033[38;5;197m"
+cGRN  = "\033[1;32m"
+cYEL  = "\033[1;33m"
+cBLUE = "\033[1;34m"
+cMGNT = "\033[1;35m"
+cCYAN = "\033[1;36m"
+cWHT  = "\033[1;37m"
+cPNK  = "\033[38;5;219m"
+cPURP = "\033[38;5;141m"
+e     = "\033[0m"
+
 #Pseudocode:
 # virt-v2v -ic 'xen+ssh://root@xen.example.com' -ip password Guest_name
 def virt_v2v(Xen_input,Xen_password,selected_VM):
@@ -39,13 +54,13 @@ def qemu_img(selected_VM):
 	selected_VM+'.vmdk'],shell=True,capture_output=True,text=True)
 	return Qemu_result.stdout				# izvada rezultātu no konvertācijas
 #ienākošie mainīgie
-parser = argparse.ArgumentParser(description="Migrācijas prototips")
-parser.add_argument('-i',dest='Xen_input',  help="Xen servera adrese", required=True)
-parser.add_argument('-p',dest='Xen_password',  help="Xen servera parole", required=True)
-parser.add_argument('-vm',dest='selected_VM', help="Xen servera Virtuālās mašīnas nosaukums", required=True)
-parser.add_argument('-P',dest='VMWare_Input',  help="VMWare servera adrese", required=True)
-parser.add_argument('-vP',dest='VMWare_Password', help="VMWare servera parole", required=True)
-parser.add_argument('-O',dest='VM_output_name',  help="Pārtaisītās KVM virtuālās mašīnas formāta nosaukums", required=True)
+parser = argparse.ArgumentParser(description=cPURP+"Bakalaura darba prototipa programma VM migrācijai"+e)
+parser.add_argument('-i',dest='Xen_input',  help=cRED+" Nepieciešams: "+e+"Xen servera adrese", required=True)
+parser.add_argument('-p',dest='Xen_password',  help=cRED+" Nepieciešams: "+e+"Xen servera parole", required=True)
+parser.add_argument('-vm',dest='selected_VM', help=cRED+" Nepieciešams: "+e+"Xen servera VM nosaukums", required=True)
+parser.add_argument('-P',dest='VMWare_Input',  help=cRED+" Nepieciešams: "+e+"VMWare servera adrese", required=True)
+parser.add_argument('-vP',dest='VMWare_Password', help=cRED+" Nepieciešams: "+e+"VMWare servera parole", required=True)
+parser.add_argument('-O',dest='VM_output_name',  help=cRED+" Nepieciešams: "+e+"Pārtaisītās KVM VM formāta nosaukums", required=True)
 
 def main():
 	args = parser.parse_args()				# ienākošo mainīgo piešķiršana/main logic
