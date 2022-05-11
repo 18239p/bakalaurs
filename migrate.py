@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 
-#nepieciešams pārbaudīt visi /usr/bin programmas ir
 #virt-tools
 #Debian -> sid
-#apt install libguestfs-tools/curl?
-#
 #pseudocode : /usr/bin
-
 #Python programma
 #Pseudocode : python -> spawn bash shell -> virt-v2v [args] -> qemu-img [args] -> scp [args]
-#
 import argparse
 import subprocess
 import os.path
@@ -27,26 +22,27 @@ cWHT  = "\033[1;37m"
 cPNK  = "\033[38;5;219m"
 cPURP = "\033[38;5;141m"
 e     = "\033[0m"
-
-
 #pseudocode : /usr/bin/scp&&qemu-img&&virt-v2v
 def filecheck():
+	print(cYEL+"checking required files:"+e)
 	filepath='/usr/bin/'
-	if (filepath+'virt-v2v'):
-		print(cGRN+"virt-v2v found"+e)
-		if(filepath+'qemu-img'):
-			print(cGRN+"qemu-img found"+e)
-			if(filepath+'scp'):
-				print(cGRN+"scp found!"+e)
+	if (os.path.exists(filepath+'virt-v2v')):
+		print(cGRN+"			virt-v2v found"+e)
+		if(os.path.exists(filepath+'qemu-img')):
+			print(cGRN+"			qemu-img found"+e)
+			if(os.path.exists(filepath+'scp')):
+				print(cGRN+"			scp found!"+e)
 			else:
-				print(cRED+"scp not found!?"+e+quit())
+				print(cRED+"			scp not found!?"+e)
+				quit()
 		else:
-			print(cRED+"qemu-img not found!"+e+quit())
+			print(cRED+"			qemu-img not found!"+e)
+			quit()
 		
 	else:
-		print(cRED+"virt-v2v not found!"+e+quit())
-			
-
+		print(cRED+"			virt-v2v not found!"+e)
+		quit()
+#
 
 #Pseudocode:
 # virt-v2v -ic 'xen+ssh://root@xen.example.com' -ip password Guest_name
@@ -75,6 +71,8 @@ def qemu_img(selected_VM):
 	selected_VM+'.qcow2',					# virtuālās mašīnas nosaukums
 	selected_VM+'.vmdk'],shell=True,capture_output=True,text=True)
 	return Qemu_result.stdout				# izvada rezultātu no konvertācijas
+#
+
 #ienākošie mainīgie
 parser = argparse.ArgumentParser(description=cPURP+"Bakalaura darba prototipa programma VM migrācijai"+e)
 parser.add_argument('-i',dest='Xen_input',  help=cRED+" Nepieciešams: "+e+"Xen servera adrese", required=True)
@@ -92,8 +90,8 @@ def main():
 	VMWare_Input   = args.VMWare_Input
 	VM_output_name = args.VM_output_name
 if __name__ == '__main__':
-	main()
 	filecheck()
+	main()
 	#1.
 	#virt-v2v
 	virt_v2v(Xen_input,Xen_password,selected_VM)		#izsauc virt-v2v no bash termināļa, skaitās kā child process
