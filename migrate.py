@@ -5,12 +5,14 @@
 #Debian -> sid
 #apt install libguestfs-tools/curl?
 #
+#pseudocode : /usr/bin
 
 #Python programma
 #Pseudocode : python -> spawn bash shell -> virt-v2v [args] -> qemu-img [args] -> scp [args]
 #
 import argparse
 import subprocess
+import os.path
 
 #get color output
 # ANSI Colors
@@ -25,6 +27,26 @@ cWHT  = "\033[1;37m"
 cPNK  = "\033[38;5;219m"
 cPURP = "\033[38;5;141m"
 e     = "\033[0m"
+
+
+#pseudocode : /usr/bin/scp&&qemu-img&&virt-v2v
+def filecheck():
+	filepath='/usr/bin/'
+	if (filepath+'virt-v2v'):
+		print(cGRN+"virt-v2v found"+e)
+		if(filepath+'qemu-img'):
+			print(cGRN+"qemu-img found"+e)
+			if(filepath+'scp'):
+				print(cGRN+"scp found!"+e)
+			else:
+				print(cRED+"scp not found!?"+e+quit())
+		else:
+			print(cRED+"qemu-img not found!"+e+quit())
+		
+	else:
+		print(cRED+"virt-v2v not found!"+e+quit())
+			
+
 
 #Pseudocode:
 # virt-v2v -ic 'xen+ssh://root@xen.example.com' -ip password Guest_name
