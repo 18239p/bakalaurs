@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 #virt-tools
 #Debian -> sid
 #pseudocode : /usr/bin
@@ -8,7 +9,13 @@
 import argparse
 import subprocess
 import os.path
-
+import os
+#uzliekam VM
+#virt-install --name=TestaVM --memory 1024 --vcpu 1 --disk Test_Pamateksemplara_VM.qcow2 --import --os-variant ubuntu20.04
+#
+# shutdown os
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-managing_guest_virtual_machines_with_virsh-shutting_down_rebooting_and_force_shutdown_of_a_guest_virtual_machine
+ # virsh <connection> shutdown guest1 
 #get color output
 # ANSI Colors
 cBLK  = "\033[1;30m"
@@ -41,64 +48,91 @@ def filecheck():
 		
 	else:
 		print(cRED+"			virt-v2v not found!"+e)
+		print("Try installing "+cPNK+"libguestfs-tools"+e+" or "+cPNK+"virt-v2v"+e+"!")
 		quit()												#python programma beidz darbību
 #
 
 #Pseudocode:
 # virt-v2v -ic 'xen+ssh://root@xen.example.com' -ip password Guest_name
-def virt_v2v(Xen_input,Xen_password,selected_VM):
+def virt_v2v(Xen_input,Xen_Password,selected_VM):
 	virt_result=subprocess.run(['virt-v2v',
 	Xen_input,												# ievade priekš XEN lietotāja
-	Xen_password,											# ievade priekš XEN paroles
+	Xen_Password,											# ievade priekš XEN paroles
 	selected_VM], shell=True, capture_output=True,text=True)
 	return virt_result.stdout								# rezultātu izvade
 #
 
 #Pseudocode:
-# scp selected_VM.vmdk root@vm.wa.re.address /sshrootdir/ 
-def scp (VMWare_Input,VMWare_Password,selected_VM):
-	scp_result=subprocess.run(['scp',
- 	VMWare_Input,											# ievade priekš VMWare lietotājvārda
-	VMWare_Password,										# ievade priekš VMWare paroles
-	selected_VM], '/',shell=True, capture_output=True,text=True)
+# scp Testa_Pamateksemplara_VM.vmdk v[vmware username]@[vmware ip]:[vmware location] /C:/Users/V/Documents/
+#scp file.txt remote_username@10.10.0.2:/remote/directory
+def scp (VMWare_Input,selected_VM,VMWare_Address,Xen_SSH_Key):
+	combinescpagain = 'scp '+selected_VM+'.vmdk '+' -i '+Xen_SSH_Key+' '+VMWare_Input+'@'+VMWare_Address+':/C:/Users/V/Documents/'
+#	print(combinescpagain)
+	scp_result=subprocess.run([combinescpagain],shell=True, capture_output=True,text=True)
 	return scp_result.stdout								# rezultātu izvade
 #
 
 #Pseudocode:
 # qemu-img -f qcow2 -O vmdk selected_VM.qcow2 selected_VM.vmdk
 def qemu_img(selected_VM):
-	Qemu_result=subprocess.run(['qemu-img', '-p -f qcow2 -O vmdk',
-	selected_VM+'.qcow2',									# virtuālās mašīnas nosaukums
-	selected_VM+'.vmdk'],shell=True,capture_output=True,text=True)
+	combineqemu='qemu-img convert -p -f qcow2 -O vmdk ' +selected_VM+".qcow2"+' '+ selected_VM+".vmdk" 
+#	print(combineqemu)
+	Qemu_result=subprocess.run([combineqemu],shell=True,capture_output=True,text=True)
 	return Qemu_result.stdout								# izvada rezultātu no konvertācijas
+#
+
+#Pseudocode:
+#scp -i ssh_key.private user@server:/path/to/remotefile.zip /Local/Target/Destination
+#scp -i nintendo toor@192.168.122.122:/home/toor/TestaVM.qcow2 /home/toor
+
+def failsafe(Xen_input,Xen_address,VM_filepath,selected_VM,Xen_SSH_Key):
+	combinescp = 'scp -i '+Xen_SSH_Key+' '+Xen_input+'@'+Xen_address+':'+VM_filepath+'/'+selected_VM+".qcow2"+' '+os.path.abspath(os.getcwd())
+#	print(combinescp)
+	failsafe=subprocess.run([combinescp],shell=True,capture_output=True,text=True)						#saglabājam esošajā datnē
+	return failsafe.stdout									#izvadam rezultātu.
+
 #
 
 #ienākošie mainīgie
 parser = argparse.ArgumentParser(description=cPURP+"Bakalaura darba prototipa programma VM migrācijai"+e)
-parser.add_argument('-i',dest='Xen_input',  help=cRED+" Nepieciešams: "+e+"Xen servera adrese", required=True)
-parser.add_argument('-p',dest='Xen_password',  help=cRED+" Nepieciešams: "+e+"Xen servera parole", required=True)
+parser.add_argument('-i',dest='Xen_input',  help=cRED+" Nepieciešams: "+e+"Xen servera lietotājvārds", required=True)
+parser.add_argument('-iX',dest='Xen_SSH_Key',  help=cRED+" Nepieciešams: "+e+"Xen servera privātā ssh atslēga", required=True)
+parser.add_argument('-p',dest='Xen_address',  help=cRED+" Nepieciešams: "+e+"Xen servera adrese", required=True)
 parser.add_argument('-vm',dest='selected_VM', help=cRED+" Nepieciešams: "+e+"Xen servera VM nosaukums", required=True)
+parser.add_argument('-xP',dest='Xen_Password',  help=cRED+" Nepieciešams: "+e+"Xen servera parole ", required=True)
+parser.add_argument('-vmp',dest='VM_filepath', help=cRED+" Nepieciešams: "+e+"Xen servera VM atrašanās vieta", required=True)
 parser.add_argument('-P',dest='VMWare_Input',  help=cRED+" Nepieciešams: "+e+"VMWare servera adrese", required=True)
-parser.add_argument('-vP',dest='VMWare_Password', help=cRED+" Nepieciešams: "+e+"VMWare servera parole", required=True)
+parser.add_argument('-vPU',dest='VMWare_Address', help=cRED+" Nepieciešams: "+e+"VMWare servera lietotājvārds", required=True)
 parser.add_argument('-O',dest='VM_output_name',  help=cRED+" Nepieciešams: "+e+"Pārtaisītās KVM VM formāta nosaukums", required=True)
-
-def main():
-	args = parser.parse_args()								# ienākošo mainīgo piešķiršana/main logic
+parser.add_argument('-F',dest='Failsafe_mode',  help=cYEL+" Failsafe variants, palaist gadījumā ja virt-v2v neiet."+e, required=False, action="store_true", default=False)
+if __name__ == '__main__':	
+	args = parser.parse_args()
+							# ienākošo mainīgo piešķiršana/main logic
 	Xen_input      = args.Xen_input
-	Xen_password   = args.Xen_password
+	Xen_address    = args.Xen_address
+	Xen_Password   = args.Xen_Password
+	Xen_SSH_Key    = args.Xen_SSH_Key
+	VM_filepath    = args.VM_filepath
 	selected_VM    = args.selected_VM
 	VMWare_Input   = args.VMWare_Input
 	VM_output_name = args.VM_output_name
-if __name__ == '__main__':
+	VMWare_Address = args.VMWare_Address
+
 	filecheck()
-	main()
 	#1.
 	#virt-v2v
-	virt_v2v(Xen_input,Xen_password,selected_VM)			#izsauc virt-v2v no bash termināļa, skaitās kā child process
-	print(virt_v2v)											#izvada funkcijas rezultātu
+	if (args.Failsafe_mode):
+		print(cMGNT+"Failsafe mode activated!"+e)
+		failsafe(Xen_input,Xen_address,VM_filepath,selected_VM,Xen_SSH_Key)
+		print(failsafe)
+		print("To manually add and install migrated VM do the following steps :")
+		print("virt-install --name=TestaVM --memory 1024 --vcpu 1 --disk Testa_Pamateksemplāra_VM.qcow2 --import --os-variant ubuntu20.04")
+	else:
+		virt_v2v(Xen_input,Xen_Password,selected_VM)
+		print(virt_v2v)											#izvada funkcijas rezultātu
 	#2.
 	qemu_img(selected_VM)									#pārveido doto VM par .vmdk formātu
 	print(qemu_img)											#izvada funkcijas rezultātu
 	#3.
-	scp(VMWare_Input,VMWare_Password,selected_VM)			#pārvieto doto VM uz VMWare servera
-	#izvadīt progresu
+	scp(VMWare_Input,selected_VM,VMWare_Address,Xen_SSH_Key)			#pārvieto doto VM uz VMWare servera
+	print(scp)#izvadīt progresu
